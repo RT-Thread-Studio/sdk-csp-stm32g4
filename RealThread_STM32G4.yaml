@@ -6872,7 +6872,7 @@ series:
     peripheral: {}
   - sub_series_name: STM32G483
     marco:
-    - STM32g484xx
+    - STM32G484xx
     source_files:
     - src/Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g4xx.h
     compiler:
