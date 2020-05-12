@@ -16,7 +16,7 @@ series:
     - communication interfaces: FDCAN, I2C, USART/UART, LPUART, SPI, SAI, USB 2.0, IRTIM, USB Type-C
   ui:
     uart:
-      default_value: UART1
+      default_value: LPUART1
       prompt_message_en: select one uart as console output interface
       prompt_message_zh: 选择一个串口作为控制台信息输出接口
     tx_pin:
