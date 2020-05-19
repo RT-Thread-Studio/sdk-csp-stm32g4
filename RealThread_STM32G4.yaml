@@ -3338,7 +3338,8 @@ series:
         source_files:
         - drivers\rtt
   - sub_series_name: STM32GBK1
-    cpu_info: []
+    cpu_info:
+      max_clock: '170000000'
     chips:
     - chip_name: STM32GBK1CB
       peripheral: {}
