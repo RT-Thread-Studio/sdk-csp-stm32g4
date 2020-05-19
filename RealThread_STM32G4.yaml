@@ -2980,7 +2980,7 @@ series:
         entry_point: none
         link_script: none
         marco:
-        - STM32g484xx
+        - STM32G484xx
         files:
         - libraries\CMSIS\Device\ST\STM32G4xx\Source\Templates\gcc\startup_stm32g484xx.S
         - libraries\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h
