@@ -13,7 +13,7 @@ series:
     - including MPU and DSP instructions.
     - using 22 Kbytes of SRAM, with HW parity check implemented on the first 16 Kbytes; and  a Routine booster: 10 Kbytes of SRAM on instruction and data bus, with HW parity check (CCM SRAM).
     - communication interfaces: FDCAN, I2C, USART/UART, LPUART, SPI, SAI, USB 2.0, IRTIM, USB Type-C
-  series_name: RealThread_STM32G4xx
+  series_name: STM32G4
   peripheral: {}
   sub_series:
   - sub_series_name: STM32G431
