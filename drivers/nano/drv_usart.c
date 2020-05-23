@@ -6,6 +6,7 @@
  * Change Logs:
  * Date           Author       Notes
  * 2019-11-09     xiangxistu   first version
+ * 2020-05-18     chenyaxing   modify stm32_uart_config struct
  */
 
 #include "stdlib.h"
