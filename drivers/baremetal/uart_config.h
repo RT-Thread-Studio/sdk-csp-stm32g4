@@ -26,8 +26,8 @@ extern "C" {
         .name = "lpuart1",                                          \
         .Instance = LPUART1,                                        \
         .irq_type = LPUART1_IRQn,                                   \
-        .tx_pin_name = BSP_LPUART1_TX_PIN,                            \
-        .rx_pin_name = BSP_LPUART1_RX_PIN,                                \
+        .tx_pin_name = BSP_LPUART1_TX_PIN,                          \
+        .rx_pin_name = BSP_LPUART1_RX_PIN,                          \
     }
 #endif /* LPUART1_CONFIG */
 #if defined(BSP_LPUART1_RX_USING_DMA)
