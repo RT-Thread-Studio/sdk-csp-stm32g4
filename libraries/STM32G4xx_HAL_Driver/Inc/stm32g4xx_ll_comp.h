@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -43,6 +43,14 @@ extern "C" {
 /* Private constants ---------------------------------------------------------*/
 
 /* Private macros ------------------------------------------------------------*/
+/** @defgroup COMP_LL_Private_Macros COMP Private Macros
+  * @{
+  */
+
+/**
+  * @}
+  */
+
 /* Exported types ------------------------------------------------------------*/
 #if defined(USE_FULL_LL_DRIVER)
 /** @defgroup COMP_LL_ES_INIT COMP Exported Init structure
@@ -78,11 +86,6 @@ typedef struct
                                              This parameter can be a value of @ref COMP_LL_EC_OUTPUT_BLANKING_SOURCE
 
                                              This feature can be modified afterwards using unitary function @ref LL_COMP_SetOutputBlankingSource(). */
-
-  uint32_t DeglitcherMode;              /*!< Configure the comparator deglitcher mode.
-                                             This parameter can be a value of @ref COMP_LL_EC_DEGLITCHER_MODE
-
-                                             This feature can be modified afterwards using unitary function @ref LL_COMP_SetDeglitcherMode(). */
 
 } LL_COMP_InitTypeDef;
 
@@ -202,15 +205,6 @@ typedef struct
   * @}
   */
 
-/** @defgroup COMP_LL_EC_DEGLITCHER_MODE Comparator Deglitcher Mode
-  * @{
-  */
-#define LL_COMP_DEGLITCHER_DISABLED      (0x00000000UL)         /*!< Comparator deglitcher disabled */
-#define LL_COMP_DEGLITCHER_ENABLED       (COMP_CSR_DEGLITCHEN)  /*!< Comparator deglitcher enabled */
-/**
-  * @}
-  */
-
 /** @defgroup COMP_LL_EC_HW_DELAYS  Definitions of COMP hardware constraints delays
   * @note   Only COMP peripheral HW delays are defined in COMP LL driver driver,
   *         not timeout values.
@@ -296,7 +290,7 @@ typedef struct
   * @note   In case of comparator input selected to be connected to IO:
   *         GPIO pins are specific to each comparator instance.
   *         Refer to description of parameters or to reference manual.
-  * @note   On this STM32 serie, scaler bridge is configurable:
+  * @note   On this STM32 series, scaler bridge is configurable:
   *         to optimize power consumption, this function enables the
   *         voltage scaler bridge only when required
   *         (when selecting comparator input based on VrefInt: VrefInt or
@@ -379,7 +373,7 @@ __STATIC_INLINE uint32_t LL_COMP_GetInputPlus(COMP_TypeDef *COMPx)
   * @note   In case of comparator input selected to be connected to IO:
   *         GPIO pins are specific to each comparator instance.
   *         Refer to description of parameters or to reference manual.
-  * @note   On this STM32 serie, scaler bridge is configurable:
+  * @note   On this STM32 series, scaler bridge is configurable:
   *         to optimize power consumption, this function enables the
   *         voltage scaler bridge only when required
   *         (when selecting comparator input based on VrefInt: VrefInt or
@@ -630,32 +624,6 @@ __STATIC_INLINE uint32_t LL_COMP_GetOutputBlankingSource(COMP_TypeDef *COMPx)
 }
 
 /**
-  * @brief  Configure comparator instance deglitcher mode.
-  * @rmtoll CSR      DEGLITCHEN      LL_COMP_SetDeglitcherMode
-  * @param  COMPx Comparator instance
-  * @param  DeglitcherMode This parameter can be one of the following values:
-  *         @arg @ref LL_COMP_DEGLITCHER_DISABLED
-  *         @arg @ref LL_COMP_DEGLITCHER_ENABLED
-  * @retval None
-  */
-__STATIC_INLINE void LL_COMP_SetDeglitcherMode(COMP_TypeDef *COMPx, uint32_t DeglitcherMode)
-{
-  MODIFY_REG(COMPx->CSR, COMP_CSR_DEGLITCHEN, DeglitcherMode);
-}
-
-/**
-  * @brief  Get comparator instance deglitcher mode.
-  * @rmtoll CSR      DEGLITCHEN      LL_COMP_GetDeglitcherMode
-  * @param  COMPx Comparator instance
-  * @retval Returned value can be one of the following values:
-  *         @arg @ref LL_COMP_DEGLITCHER_DISABLED
-  *         @arg @ref LL_COMP_DEGLITCHER_ENABLED
-  */
-__STATIC_INLINE uint32_t LL_COMP_GetDeglitcherMode(COMP_TypeDef *COMPx)
-{
-  return (uint32_t)(READ_BIT(COMPx->CSR, COMP_CSR_DEGLITCHEN));
-}
-/**
   * @}
   */
 
@@ -729,7 +697,7 @@ __STATIC_INLINE uint32_t LL_COMP_IsLocked(COMP_TypeDef *COMPx)
 
 /**
   * @brief  Read comparator instance output level.
-  * @note   On this STM32 serie, comparator 'value' is taken before
+  * @note   On this STM32 series, comparator 'value' is taken before
   *         polarity and blanking are applied, thus:
   *          - Comparator output is low when the input plus
   *            is at a lower voltage than the input minus
