@@ -57,7 +57,6 @@
       (++) Select the hysteresis
       (++) Select the blanking source
       (++) Select the output polarity
-      (++) Select the deglitcher mode
 
       -@@- HAL_COMP_Init() calls internally __HAL_RCC_SYSCFG_CLK_ENABLE()
           to enable internal control clock of the comparators.
@@ -87,11 +86,11 @@
 
      The compilation flag USE_HAL_COMP_REGISTER_CALLBACKS, when set to 1,
      allows the user to configure dynamically the driver callbacks.
-     Use Functions @ref HAL_COMP_RegisterCallback()
+     Use Functions HAL_COMP_RegisterCallback()
      to register an interrupt callback.
     [..]
 
-     Function @ref HAL_COMP_RegisterCallback() allows to register following callbacks:
+     Function HAL_COMP_RegisterCallback() allows to register following callbacks:
        (+) TriggerCallback       : callback for COMP trigger.
        (+) MspInitCallback       : callback for Msp Init.
        (+) MspDeInitCallback     : callback for Msp DeInit.
@@ -99,11 +98,11 @@
      and a pointer to the user callback function.
     [..]
 
-     Use function @ref HAL_COMP_UnRegisterCallback to reset a callback to the default
+     Use function HAL_COMP_UnRegisterCallback to reset a callback to the default
      weak function.
     [..]
 
-     @ref HAL_COMP_UnRegisterCallback takes as parameters the HAL peripheral handle,
+     HAL_COMP_UnRegisterCallback takes as parameters the HAL peripheral handle,
      and the Callback ID.
      This function allows to reset following callbacks:
        (+) TriggerCallback       : callback for COMP trigger.
@@ -111,27 +110,27 @@
        (+) MspDeInitCallback     : callback for Msp DeInit.
      [..]
 
-     By default, after the @ref HAL_COMP_Init() and when the state is @ref HAL_COMP_STATE_RESET
+     By default, after the HAL_COMP_Init() and when the state is HAL_COMP_STATE_RESET
      all callbacks are set to the corresponding weak functions:
-     example @ref HAL_COMP_TriggerCallback().
+     example HAL_COMP_TriggerCallback().
      Exception done for MspInit and MspDeInit functions that are
-     reset to the legacy weak functions in the @ref HAL_COMP_Init()/ @ref HAL_COMP_DeInit() only when
+     reset to the legacy weak functions in the HAL_COMP_Init()/ HAL_COMP_DeInit() only when
      these callbacks are null (not registered beforehand).
     [..]
 
-     If MspInit or MspDeInit are not null, the @ref HAL_COMP_Init()/ @ref HAL_COMP_DeInit()
+     If MspInit or MspDeInit are not null, the HAL_COMP_Init()/ HAL_COMP_DeInit()
      keep and use the user MspInit/MspDeInit callbacks (registered beforehand) whatever the state.
      [..]
 
-     Callbacks can be registered/unregistered in @ref HAL_COMP_STATE_READY state only.
+     Callbacks can be registered/unregistered in HAL_COMP_STATE_READY state only.
      Exception done MspInit/MspDeInit functions that can be registered/unregistered
-     in @ref HAL_COMP_STATE_READY or @ref HAL_COMP_STATE_RESET state,
+     in HAL_COMP_STATE_READY or HAL_COMP_STATE_RESET state,
      thus registered (user) MspInit/DeInit callbacks can be used during the Init/DeInit.
     [..]
 
      Then, the user first registers the MspInit/MspDeInit user callbacks
-     using @ref HAL_COMP_RegisterCallback() before calling @ref HAL_COMP_DeInit()
-     or @ref HAL_COMP_Init() function.
+     using HAL_COMP_RegisterCallback() before calling HAL_COMP_DeInit()
+     or HAL_COMP_Init() function.
      [..]
 
      When the compilation flag USE_HAL_COMP_REGISTER_CALLBACKS is set to 0 or
@@ -144,7 +143,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -253,7 +252,6 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
     assert_param(IS_COMP_HYSTERESIS(hcomp->Init.Hysteresis));
     assert_param(IS_COMP_BLANKINGSRC_INSTANCE(hcomp->Instance, hcomp->Init.BlankingSrce));
     assert_param(IS_COMP_TRIGGERMODE(hcomp->Init.TriggerMode));
-    assert_param(IS_COMP_DEGLITCHER_MODE(hcomp->Init.DeglitcherMode));
 
     if(hcomp->State == HAL_COMP_STATE_RESET)
     {
@@ -296,13 +294,12 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
                | hcomp->Init.BlankingSrce
                | hcomp->Init.Hysteresis
                | hcomp->Init.OutputPol
-               | hcomp->Init.DeglitcherMode
               );
 
     /* Set parameters in COMP register */
     /* Note: Update all bits except read-only, lock and enable bits */
     MODIFY_REG(hcomp->Instance->CSR,
-               COMP_CSR_INMSEL   | COMP_CSR_INPSEL | COMP_CSR_DEGLITCHEN |
+               COMP_CSR_INMSEL   | COMP_CSR_INPSEL |
                COMP_CSR_POLARITY | COMP_CSR_HYST   |
                COMP_CSR_BLANKING | COMP_CSR_BRGEN  | COMP_CSR_SCALEN,
                tmp_csr
@@ -333,7 +330,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       /* Configure EXTI rising edge */
       if((hcomp->Init.TriggerMode & COMP_EXTI_RISING) != 0UL)
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableRisingTrig_32_63(exti_line);
@@ -348,7 +345,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
       else
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableRisingTrig_32_63(exti_line);
@@ -365,7 +362,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       /* Configure EXTI falling edge */
       if((hcomp->Init.TriggerMode & COMP_EXTI_FALLING) != 0UL)
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableFallingTrig_32_63(exti_line);
@@ -380,7 +377,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
       else
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableFallingTrig_32_63(exti_line);
@@ -395,7 +392,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
 
       /* Clear COMP EXTI pending bit (if any) */
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
       {
         LL_EXTI_ClearFlag_32_63(exti_line);
@@ -411,7 +408,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       /* Configure EXTI event mode */
       if((hcomp->Init.TriggerMode & COMP_EXTI_EVENT) != 0UL)
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableEvent_32_63(exti_line);
@@ -426,7 +423,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
       else
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableEvent_32_63(exti_line);
@@ -443,7 +440,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       /* Configure EXTI interrupt mode */
       if((hcomp->Init.TriggerMode & COMP_EXTI_IT) != 0UL)
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableIT_32_63(exti_line);
@@ -458,7 +455,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
       else
       {
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableIT_32_63(exti_line);
@@ -475,7 +472,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
     else
     {
       /* Disable EXTI event mode */
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
       {
         LL_EXTI_DisableEvent_32_63(exti_line);
@@ -489,7 +486,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
 #endif
 
       /* Disable EXTI interrupt mode */
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
       {
         LL_EXTI_DisableIT_32_63(exti_line);
@@ -883,7 +880,7 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
   uint32_t tmp_comp_exti_flag_set = 0UL;
 
   /* Check COMP EXTI flag */
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
   if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
   {
     if(LL_EXTI_IsActiveFlag_32_63(exti_line) != 0UL)
@@ -908,7 +905,7 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
   if(tmp_comp_exti_flag_set != 0UL)
   {
       /* Clear COMP EXTI line pending bit */
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if(tmp_comp_exti_flag_set == 2UL)
       {
         LL_EXTI_ClearFlag_32_63(exti_line);
@@ -1000,7 +997,7 @@ HAL_StatusTypeDef HAL_COMP_Lock(COMP_HandleTypeDef *hcomp)
 
 /**
   * @brief  Return the output level (high or low) of the selected comparator.
-  *         On this STM32 serie, comparator 'value' is taken before
+  *         On this STM32 series, comparator 'value' is taken before
   *         polarity and blanking are applied, thus:
   *           - Comparator output is low when the input plus is at a lower
   *             voltage than the input minus

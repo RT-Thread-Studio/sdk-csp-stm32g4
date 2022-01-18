@@ -13,12 +13,12 @@
 ;*                        calls main()).
 ;*                      After Reset the Cortex-M4 processor is in Thread mode,
 ;*                      priority is Privileged, and the Stack is set to Main.
-;* <<< Use Configuration Wizard in Context Menu >>>
+
 ;********************************************************************************
 ;* @attention
 ;*
-;*                  Copyright (c) 2017 STMicroelectronics.
-;*                          All rights reserved.
+;* <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+;* All rights reserved.</center></h2>
 ;*
 ;* This software component is licensed by ST under BSD 3-Clause license,
 ;* the "License"; You may not use this file except in compliance with the
@@ -26,6 +26,7 @@
 ;*                        opensource.org/licenses/BSD-3-Clause
 ;*
 ;*******************************************************************************
+;* <<< Use Configuration Wizard in Context Menu >>>
 ;
 ; Amount of memory (in bytes) allocated for Stack
 ; Tailor this value to your application needs
@@ -44,7 +45,7 @@ __initial_sp
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
-Heap_Size       EQU     0x200;
+Heap_Size       EQU     0x00000000;
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
 __heap_base
@@ -126,7 +127,7 @@ __Vectors       DCD     __initial_sp               ; Top of Stack
                 DCD     TIM8_UP_IRQHandler                ; TIM8 Update Interrupt
                 DCD     TIM8_TRG_COM_IRQHandler           ; TIM8 Trigger, Commutation, Direction change and Index Interrupt
                 DCD     TIM8_CC_IRQHandler                ; TIM8 Capture Compare Interrupt
-                DCD     0                                 ; Reserved
+                DCD     ADC3_IRQHandler                   ; ADC3
                 DCD     0                                 ; Reserved
                 DCD     LPTIM1_IRQHandler                 ; LP TIM1 interrupt
                 DCD     TIM5_IRQHandler                   ; TIM5
@@ -291,6 +292,7 @@ Default_Handler PROC
         EXPORT     TIM8_UP_IRQHandler                [WEAK]
         EXPORT     TIM8_TRG_COM_IRQHandler           [WEAK]
         EXPORT     TIM8_CC_IRQHandler                [WEAK]
+        EXPORT     ADC3_IRQHandler                   [WEAK]
         EXPORT     LPTIM1_IRQHandler                 [WEAK]
         EXPORT     TIM5_IRQHandler                   [WEAK]
         EXPORT     SPI3_IRQHandler                   [WEAK]
@@ -370,6 +372,7 @@ TIM8_BRK_IRQHandler
 TIM8_UP_IRQHandler
 TIM8_TRG_COM_IRQHandler
 TIM8_CC_IRQHandler
+ADC3_IRQHandler
 LPTIM1_IRQHandler
 TIM5_IRQHandler
 SPI3_IRQHandler

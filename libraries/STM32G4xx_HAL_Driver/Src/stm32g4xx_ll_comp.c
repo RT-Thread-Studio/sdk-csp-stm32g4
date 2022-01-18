@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -49,7 +49,7 @@
 /* Check of parameters for configuration of COMP hierarchical scope:          */
 /* COMP instance.                                                             */
 
-/* Note: On this STM32 serie, comparator input plus parameters are            */
+/* Note: On this STM32 series, comparator input plus parameters are           */
 /*       the same on all COMP instances.                                      */
 /*       However, comparator instance kept as macro parameter for             */
 /*       compatibility with other STM32 families.                             */
@@ -57,7 +57,7 @@
   (   ((__INPUT_PLUS__) == LL_COMP_INPUT_PLUS_IO1)                             \
    || ((__INPUT_PLUS__) == LL_COMP_INPUT_PLUS_IO2)                             \
   )
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
 #define IS_LL_COMP_INPUT_MINUS(__COMP_INSTANCE__, __INPUT_MINUS__)           \
                   (((__INPUT_MINUS__) == LL_COMP_INPUT_MINUS_1_4VREFINT)  || \
                    ((__INPUT_MINUS__) == LL_COMP_INPUT_MINUS_1_2VREFINT)  || \
@@ -93,7 +93,7 @@
                     (((__INPUT_MINUS__) == LL_COMP_INPUT_MINUS_DAC2_CH1)  || \
                     ((__INPUT_MINUS__) == LL_COMP_INPUT_MINUS_DAC4_CH1))     \
                    ))
-#elif defined(STM32GBK1CB) || defined(STM32G431xx) || defined(STM32G441xx) || defined(STM32G471xx)
+#elif defined(STM32GBK1CB) || defined(STM32G431xx) || defined(STM32G441xx) || defined(STM32G471xx) || defined(STM32G491xx) || defined(STM32G4A1xx)
 #define IS_LL_COMP_INPUT_MINUS(__COMP_INSTANCE__, __INPUT_MINUS__)           \
                   (((__INPUT_MINUS__) == LL_COMP_INPUT_MINUS_1_4VREFINT)  || \
                    ((__INPUT_MINUS__) == LL_COMP_INPUT_MINUS_1_2VREFINT)  || \
@@ -135,7 +135,7 @@
    || ((__POLARITY__) == LL_COMP_OUTPUTPOL_INVERTED)                           \
   )
 
-#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
 #define IS_LL_COMP_OUTPUT_BLANKING_SOURCE(__INSTANCE__, __OUTPUT_BLANKING_SOURCE__)  \
      ((((__INSTANCE__) == COMP1) &&                                                  \
       (((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_NONE)            ||      \
@@ -221,12 +221,40 @@
       || ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM15_OC1)             \
       || ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM4_OC3)              \
       )
+#elif defined(STM32G491xx) || defined(STM32G4A1xx)
+#define IS_LL_COMP_OUTPUT_BLANKING_SOURCE(__INSTANCE__, __OUTPUT_BLANKING_SOURCE__)  \
+     ((((__INSTANCE__) == COMP1) &&                                                  \
+      (((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_NONE)            ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM1_OC5_COMP1)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM2_OC3_COMP1)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM3_OC3_COMP1)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM8_OC5_COMP1)))        \
+      ||                                                                             \
+      (((__INSTANCE__) == COMP2) &&                                                  \
+      (((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_NONE)            ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM1_OC5_COMP2)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM2_OC3_COMP2)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM3_OC3_COMP2)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM8_OC5_COMP2)))        \
+      ||                                                                             \
+      (((__INSTANCE__) == COMP3) &&                                                  \
+      (((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_NONE)            ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM1_OC5_COMP3)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM2_OC4_COMP3)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM3_OC3_COMP3)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM8_OC5_COMP3)))        \
+      ||                                                                             \
+      (((__INSTANCE__) == COMP4) &&                                                  \
+      (((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_NONE)            ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM1_OC5_COMP4)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM3_OC4_COMP4)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM8_OC5_COMP4)  ||      \
+       ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM15_OC1_COMP4)))       \
+      || ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM20_OC5)             \
+      || ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM15_OC1)             \
+      || ((__OUTPUT_BLANKING_SOURCE__) == LL_COMP_BLANKINGSRC_TIM4_OC3)              \
+      )
 #endif
-#define IS_LL_COMP_DEGLITCHER_MODE(__INSTANCE__, __DEGLITCHER__)               \
-  (   ((__DEGLITCHER__) == LL_COMP_DEGLITCHER_DISABLED)                        \
-   || ((__DEGLITCHER__) == LL_COMP_DEGLITCHER_ENABLED)                         \
-  )
-
 /**
   * @}
   */
@@ -302,7 +330,6 @@ ErrorStatus LL_COMP_Init(COMP_TypeDef *COMPx, LL_COMP_InitTypeDef *COMP_InitStru
   assert_param(IS_LL_COMP_INPUT_HYSTERESIS(COMP_InitStruct->InputHysteresis));
   assert_param(IS_LL_COMP_OUTPUT_POLARITY(COMP_InitStruct->OutputPolarity));
   assert_param(IS_LL_COMP_OUTPUT_BLANKING_SOURCE(COMPx, COMP_InitStruct->OutputBlankingSource));
-  assert_param(IS_LL_COMP_DEGLITCHER_MODE(COMPx, COMP_InitStruct->DeglitcherMode));
 
   /* Note: Hardware constraint (refer to description of this function)        */
   /*       COMP instance must not be locked.                                  */
@@ -314,7 +341,6 @@ ErrorStatus LL_COMP_Init(COMP_TypeDef *COMPx, LL_COMP_InitTypeDef *COMP_InitStru
     /*  - InputHysteresis                                                     */
     /*  - OutputPolarity                                                      */
     /*  - OutputBlankingSource                                                */
-    /*  - DeglitcherMode                                                      */
     MODIFY_REG(COMPx->CSR,
                COMP_CSR_INPSEL
                | COMP_CSR_SCALEN
@@ -323,14 +349,12 @@ ErrorStatus LL_COMP_Init(COMP_TypeDef *COMPx, LL_COMP_InitTypeDef *COMP_InitStru
                | COMP_CSR_HYST
                | COMP_CSR_POLARITY
                | COMP_CSR_BLANKING
-               | COMP_CSR_DEGLITCHEN
                ,
                COMP_InitStruct->InputPlus
                | COMP_InitStruct->InputMinus
                | COMP_InitStruct->InputHysteresis
                | COMP_InitStruct->OutputPolarity
                | COMP_InitStruct->OutputBlankingSource
-               | COMP_InitStruct->DeglitcherMode
               );
 
   }
@@ -357,7 +381,6 @@ void LL_COMP_StructInit(LL_COMP_InitTypeDef *COMP_InitStruct)
   COMP_InitStruct->InputHysteresis      = LL_COMP_HYSTERESIS_NONE;
   COMP_InitStruct->OutputPolarity       = LL_COMP_OUTPUTPOL_NONINVERTED;
   COMP_InitStruct->OutputBlankingSource = LL_COMP_BLANKINGSRC_NONE;
-  COMP_InitStruct->DeglitcherMode = LL_COMP_DEGLITCHER_DISABLED;
 }
 
 /**
